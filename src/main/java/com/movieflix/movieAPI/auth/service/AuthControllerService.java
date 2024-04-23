@@ -7,7 +7,6 @@ import com.movieflix.movieAPI.auth.repositories.UserRepository;
 import com.movieflix.movieAPI.auth.utils.AuthResponse;
 import com.movieflix.movieAPI.auth.utils.LoginRequest;
 import com.movieflix.movieAPI.auth.utils.RegisterRequest;
-import io.jsonwebtoken.Jwt;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,7 +19,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class AuthService {
+public class AuthControllerService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;

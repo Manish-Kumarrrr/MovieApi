@@ -2,14 +2,13 @@ package com.movieflix.movieAPI.auth.controller;
 
 import com.movieflix.movieAPI.auth.entities.RefreshToken;
 import com.movieflix.movieAPI.auth.entities.User;
-import com.movieflix.movieAPI.auth.service.AuthService;
+import com.movieflix.movieAPI.auth.service.AuthControllerService;
 import com.movieflix.movieAPI.auth.service.JwtService;
 import com.movieflix.movieAPI.auth.service.RefreshTokenService;
 import com.movieflix.movieAPI.auth.utils.AuthResponse;
 import com.movieflix.movieAPI.auth.utils.LoginRequest;
 import com.movieflix.movieAPI.auth.utils.RefreshTokenRequest;
 import com.movieflix.movieAPI.auth.utils.RegisterRequest;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,19 +24,19 @@ import java.util.HashMap;
 public class AuthController {
 
 
-    private final AuthService authService;
+    private final AuthControllerService authControllerService;
     private final RefreshTokenService refreshTokenService;
     private final JwtService jwtService;
 
 
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest registerRequest){
-        return ResponseEntity.ok(authService.register(registerRequest));
+        return ResponseEntity.ok(authControllerService.register(registerRequest));
     }
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest loginRequest){
-        return ResponseEntity.ok(authService.login(loginRequest));
+        return ResponseEntity.ok(authControllerService.login(loginRequest));
     }
 
     @PostMapping("/refreshToken")

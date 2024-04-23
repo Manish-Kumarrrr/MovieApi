@@ -9,10 +9,8 @@ import com.movieflix.movieAPI.auth.forgotResetPassword.entities.ForgotPassword;
 import com.movieflix.movieAPI.auth.forgotResetPassword.repositories.ForgotPasswordRepository;
 import com.movieflix.movieAPI.auth.forgotResetPassword.service.EmailService;
 import com.movieflix.movieAPI.auth.repositories.UserRepository;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,15 +25,18 @@ import java.util.Random;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/forgotPassword")
-public class ForgotPasswordConroller {
+public class ForgotPasswordController {
 
     private final UserRepository userRepository;
     private final EmailService emailService;
     private final ForgotPasswordRepository forgotPasswordRepository;
     private final PasswordEncoder passwordEncoder;
+
+
+
     // send mail for email verification
-    @PostMapping("/verifyMail/{email}")
-    public ResponseEntity<String> vefifyMail(@PathVariable String email){
+    @GetMapping("/verifyMail/{email}")
+    public ResponseEntity<String> verifyMail(@PathVariable String email){
         User user=userRepository.findByEmail(email).orElseThrow(()-> new UsernameNotFoundException("Please provide a valid email"));
         int otp=otpGenerator();
         MailBody mailBody =MailBody
@@ -51,7 +52,7 @@ public class ForgotPasswordConroller {
                 .user(user)
                 .build();
 
-        emailService.sendSimpleMessage(mailBody);
+        emailService.sendSimpleMessage(mailBody );
         return ResponseEntity.ok("Email sent for Verification!");
 
     }
@@ -68,7 +69,7 @@ public class ForgotPasswordConroller {
             forgotPasswordRepository.deleteById(forgotPassword.getFpid());
             return new ResponseEntity<>("OTP has been expired!", HttpStatus.EXPECTATION_FAILED);
         }
-            forgotPasswordRepository.deleteById(forgotPassword.getFpid());
+//            forgotPasswordRepository.deleteById(forgotPassword.getFpid());
         return ResponseEntity.ok("OTP has been verified!");
 
     }

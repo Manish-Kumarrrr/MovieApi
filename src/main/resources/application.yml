@@ -18,7 +18,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: "mkc1020304050gmail.com"
-    password: "nygw xefb cjtv expv"
+    password: ""
     properties:
       mail:
         smtp:
@@ -33,3 +33,12 @@ project:
 base:
   url: "http://localhost:8080"
 
+
+#logging:
+#  level:
+#    org:
+#      hibernate: ERROR
+#      springframework:
+#        security: TRACE
+#        web: DEBUG
+#    root: WARN

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.Instant;
 import java.util.Date;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Random;
 
 
@@ -38,6 +39,11 @@ public class ForgotPasswordController {
     @GetMapping("/verifyMail/{email}")
     public ResponseEntity<String> verifyMail(@PathVariable String email){
         User user=userRepository.findByEmail(email).orElseThrow(()-> new UsernameNotFoundException("Please provide a valid email"));
+        Optional<ForgotPassword> fp=forgotPasswordRepository.findByUser(user);
+         if(fp.isPresent()){
+            forgotPasswordRepository.deleteById(fp.orElse(null).getFpid());
+            }
+
         int otp=otpGenerator();
         MailBody mailBody =MailBody
                 .builder()
@@ -51,12 +57,12 @@ public class ForgotPasswordController {
                 .expirationTime(new Date(System.currentTimeMillis()+70*1000))
                 .user(user)
                 .build();
+        forgotPassword=forgotPasswordRepository.save(forgotPassword);
 
         emailService.sendSimpleMessage(mailBody );
         return ResponseEntity.ok("Email sent for Verification!");
 
     }
-
 
     @PostMapping("/verifyOtp")
     public ResponseEntity<String> verifyOtp(@RequestBody VerifyOtpRequest verifyOtpRequest){
@@ -69,7 +75,7 @@ public class ForgotPasswordController {
             forgotPasswordRepository.deleteById(forgotPassword.getFpid());
             return new ResponseEntity<>("OTP has been expired!", HttpStatus.EXPECTATION_FAILED);
         }
-//            forgotPasswordRepository.deleteById(forgotPassword.getFpid());
+
         return ResponseEntity.ok("OTP has been verified!");
 
     }

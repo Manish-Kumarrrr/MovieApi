@@ -19,17 +19,15 @@ public class EmailService {
     public String from;
     public void sendSimpleMessage(MailBody mailBody){
 
-        System.out.println("message checking");
+        System.out.println("message service Start");
         SimpleMailMessage message=new SimpleMailMessage();
-        message.setTo("manishkumar09092003@gmail.com");
+        message.setTo("mkc1020304050@gmail.com");
         message.setFrom(from);
         message.setSubject(mailBody.subject());
         message.setText(mailBody.text());
-
-        System.out.println(message);
         javaMailSender.send(message);
 
-
+        System.out.println("message service End");
     }
 
 }

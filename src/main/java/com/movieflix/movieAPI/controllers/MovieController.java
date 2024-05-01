@@ -7,6 +7,7 @@ import com.movieflix.movieAPI.exceptions.EmptyFileException;
 import com.movieflix.movieAPI.service.*;
 //import com.movieflix.movieAPI.service.MovieServiceImpl;
 import com.movieflix.movieAPI.utils.AppConstants;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -47,7 +48,10 @@ public class MovieController {
     }
 
     @GetMapping("/allmovie")
+    @Cacheable("getAllMovies")
     public ResponseEntity<List<MovieDto>> getAllMovie(){
+
+        System.out.println("getallmovies--controller------------------*****************************************-------------------------------------------------");
         return ResponseEntity.ok(movieService.getAllMovies());
     }
 
@@ -68,10 +72,12 @@ public class MovieController {
     // get all movies with pagination
     @GetMapping("/allMoviesPage")
     @PreAuthorize("hasAuthority('ADMIN')")
+    @Cacheable("address")
     public ResponseEntity<MoviePageResponse> getMovieswithPagination(
             @RequestParam(defaultValue = AppConstants.PAGE_NUMBER,required = false) Integer pageNumber,
             @RequestParam(defaultValue = AppConstants.PAGE_SIZE,required = false) Integer pageSize
     ){
+
         return ResponseEntity.ok(movieService.getAllMoviesWithPagination(pageNumber,pageSize));
     }
 
